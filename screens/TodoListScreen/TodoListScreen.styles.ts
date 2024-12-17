@@ -3,27 +3,26 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 20,
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  dropdownItem: {
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
     padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
+    marginVertical: 10,
+    fontSize: 16,
   },
   todoItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
   },
   todoText: {
     fontSize: 18,
@@ -32,13 +31,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textDecorationLine: 'line-through',
     color: 'gray',
-  },
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
-    borderColor: '#ccc',
-    borderRadius: 5,
   },
 });
 

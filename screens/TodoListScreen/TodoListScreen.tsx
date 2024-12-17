@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './TodoListScreen.styles';
 
 type Todo = {
@@ -9,72 +10,75 @@ type Todo = {
 };
 
 export const TodoListScreen = ({ route }: any) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodo, setNewTodo] = useState('');
-  const [selectedList, setSelectedList] = useState<string | null>(null);
-  const [oldLists] = useState<{ id: string; date: string; items: Todo[] }[]>([
-    { id: '1', date: '2024-06-12', items: [{ id: '1', title: 'Old Task', completed: false }] },
-    { id: '2', date: '2024-06-10', items: [] },
-  ]);
+  const { isNewList } = route.params;
+  const [todos, setTodos] = useState<Todo[]>([]); // State for TODO items
+  const [newTodo, setNewTodo] = useState(''); // State for new TODO input
+  const storageKey = 'todoLists'; // Key to save/load data from AsyncStorage
 
-  const isCreatingNewList = route?.params?.isNewList || false;
+  // Load TODO list from AsyncStorage
+  useEffect(() => {
+    const loadTodos = async () => {
+      try {
+        const savedTodos = await AsyncStorage.getItem(storageKey);
+        if (savedTodos) {
+          setTodos(JSON.parse(savedTodos));
+        }
+      } catch (error) {
+        console.error('Failed to load TODOs:', error);
+      }
+    };
+    loadTodos();
+  }, []);
+
+  // Save TODO list to AsyncStorage whenever it changes
+  useEffect(() => {
+    const saveTodos = async () => {
+      try {
+        await AsyncStorage.setItem(storageKey, JSON.stringify(todos));
+      } catch (error) {
+        console.error('Failed to save TODOs:', error);
+      }
+    };
+    saveTodos();
+  }, [todos]);
 
   const handleAddTodo = () => {
     if (newTodo.trim()) {
-      setTodos([...todos, { id: Date.now().toString(), title: newTodo, completed: false }]);
+      setTodos((prev) => [
+        ...prev,
+        { id: Date.now().toString(), title: newTodo, completed: false },
+      ]);
       setNewTodo('');
-    }
-  };
-
-  const handleSelectList = (listId: string) => {
-    const selected = oldLists.find((list) => list.id === listId);
-    if (selected) {
-      setSelectedList(listId);
-      setTodos(selected.items);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TODO List</Text>
+      <Text style={styles.title}>
+        {isNewList ? 'Create a New TODO List' : 'Edit TODO List'}
+      </Text>
 
-      {!isCreatingNewList && (
-        <>
-          <Text style={styles.subtitle}>Select an Old TODO List:</Text>
-          {oldLists.map((list) => (
-            <TouchableOpacity
-              key={list.id}
-              style={styles.dropdownItem}
-              onPress={() => handleSelectList(list.id)}
-            >
-              <Text>{list.date}</Text>
-            </TouchableOpacity>
-          ))}
-        </>
-      )}
+      {/* Input for adding new TODO */}
+      <TextInput
+        style={styles.input}
+        placeholder="Enter a new TODO"
+        value={newTodo}
+        onChangeText={setNewTodo}
+      />
+      <Button title="Add TODO" onPress={handleAddTodo} />
 
-      {selectedList || isCreatingNewList ? (
-        <>
-          <FlatList
-            data={todos}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.todoItem}>
-                <Text style={item.completed ? styles.completedText : styles.todoText}>
-                  {item.title}
-                </Text>
-              </View>
-            )}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Add a new TODO"
-            value={newTodo}
-            onChangeText={setNewTodo}
-          />
-          <Button title="Add TODO" onPress={handleAddTodo} />
-        </>
-      ) : null}
+      {/* Display the TODO items */}
+      <FlatList
+        data={todos}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.todoItem}>
+            <Text style={item.completed ? styles.completedText : styles.todoText}>
+              {item.title}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 };

@@ -9,14 +9,14 @@ export const HomeScreen = ({ navigation }: any) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('CreateTodo')}
+        onPress={() => navigation.navigate('TodoList', { isNewList: true })}
       >
         <Text style={styles.buttonText}>Create a New TODO List</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('OldTodos')}
+        onPress={() => navigation.navigate('TodoList', { isNewList: false })}
       >
         <Text style={styles.buttonText}>See Old TODO Lists</Text>
       </TouchableOpacity>
