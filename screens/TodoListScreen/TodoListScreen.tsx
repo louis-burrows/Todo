@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, Button, FlatList, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './TodoListScreen.styles';
 
@@ -9,76 +9,153 @@ type Todo = {
   completed: boolean;
 };
 
-export const TodoListScreen = ({ route }: any) => {
-  const { isNewList } = route.params;
-  const [todos, setTodos] = useState<Todo[]>([]); // State for TODO items
-  const [newTodo, setNewTodo] = useState(''); // State for new TODO input
-  const storageKey = 'todoLists'; // Key to save/load data from AsyncStorage
+type TodoList = {
+  id: string;
+  name: string;
+  createdAt: string;
+  items: Todo[];
+};
 
-  // Load TODO list from AsyncStorage
+export const TodoListScreen = ({ route, navigation }: any) => {
+  const { isNewList } = route.params;
+  const [allLists, setAllLists] = useState<TodoList[]>([]);
+  const [selectedList, setSelectedList] = useState<TodoList | null>(null);
+  const [newTodo, setNewTodo] = useState('');
+  const [listName, setListName] = useState('');
+
+  // Load all saved TODO lists
   useEffect(() => {
-    const loadTodos = async () => {
+    const loadLists = async () => {
       try {
-        const savedTodos = await AsyncStorage.getItem(storageKey);
-        if (savedTodos) {
-          setTodos(JSON.parse(savedTodos));
-        }
+        const keys = await AsyncStorage.getAllKeys();
+        const listKeys = keys.filter((key) => key.startsWith('todoList_'));
+        const storedLists = await AsyncStorage.multiGet(listKeys);
+
+        const parsedLists: TodoList[] = storedLists
+          .map(([key, value]) => (value ? JSON.parse(value) : null))
+          .filter(Boolean);
+
+        setAllLists(parsedLists);
       } catch (error) {
-        console.error('Failed to load TODOs:', error);
+        console.error('Failed to load TODO lists:', error);
       }
     };
-    loadTodos();
+    loadLists();
   }, []);
 
-  // Save TODO list to AsyncStorage whenever it changes
-  useEffect(() => {
-    const saveTodos = async () => {
-      try {
-        await AsyncStorage.setItem(storageKey, JSON.stringify(todos));
-      } catch (error) {
-        console.error('Failed to save TODOs:', error);
-      }
-    };
-    saveTodos();
-  }, [todos]);
+  // Add a new TODO to the selected list
+  const handleAddTodo = async () => {
+    if (newTodo.trim() && selectedList) {
+      const updatedList = {
+        ...selectedList,
+        items: [
+          ...selectedList.items,
+          { id: Date.now().toString(), title: newTodo, completed: false },
+        ],
+      };
 
-  const handleAddTodo = () => {
-    if (newTodo.trim()) {
-      setTodos((prev) => [
-        ...prev,
-        { id: Date.now().toString(), title: newTodo, completed: false },
-      ]);
+      setSelectedList(updatedList);
+      await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList));
       setNewTodo('');
     }
+  };
+
+  // Save the list name
+  const handleSaveListName = async () => {
+    if (selectedList && listName.trim()) {
+      const updatedList = { ...selectedList, name: listName };
+      await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList));
+
+      setAllLists((prev) =>
+        prev.map((list) => (list.id === updatedList.id ? updatedList : list))
+      );
+      setSelectedList(updatedList);
+      setListName('');
+    }
+  };
+
+  // Select an existing TODO list
+  const handleSelectList = (list: TodoList) => {
+    setSelectedList(list);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {isNewList ? 'Create a New TODO List' : 'Edit TODO List'}
+        {isNewList ? 'Create a New TODO List' : 'Select an Old TODO List'}
       </Text>
 
-      {/* Input for adding new TODO */}
-      <TextInput
-        style={styles.input}
-        placeholder="Enter a new TODO"
-        value={newTodo}
-        onChangeText={setNewTodo}
-      />
-      <Button title="Add TODO" onPress={handleAddTodo} />
+      {!isNewList && !selectedList && (
+        <FlatList
+          data={allLists}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleSelectList(item)}
+            >
+              <Text style={styles.buttonText}>
+                {item.name.length > 20 ? item.name.substring(0, 20) + '...' : item.name} -{' '}
+                {item.createdAt}
+              </Text>
+            </TouchableOpacity>
+          )}
+          ListEmptyComponent={<Text>No TODO lists found.</Text>}
+        />
+      )}
 
-      {/* Display the TODO items */}
-      <FlatList
-        data={todos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.todoItem}>
-            <Text style={item.completed ? styles.completedText : styles.todoText}>
-              {item.title}
-            </Text>
-          </View>
-        )}
-      />
+      {isNewList && !selectedList && (
+        <Button
+          title="Start a New List"
+          onPress={async () => {
+            const newList = {
+              id: Date.now().toString(),
+              name: 'Unnamed List',
+              createdAt: new Date().toLocaleDateString(),
+              items: [],
+            };
+            await AsyncStorage.setItem(`todoList_${newList.id}`, JSON.stringify(newList));
+            setSelectedList(newList);
+          }}
+        />
+      )}
+
+      {selectedList && (
+        <>
+          {/* List Name Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Enter List Name"
+            value={listName}
+            onChangeText={setListName}
+          />
+          <Button title="Save List Name" onPress={handleSaveListName} />
+
+          {/* TODO List */}
+          <FlatList
+            data={selectedList.items}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.todoItem}>
+                <Text style={styles.todoText}>{item.title}</Text>
+              </View>
+            )}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Add a new TODO"
+            value={newTodo}
+            onChangeText={setNewTodo}
+          />
+          <Button title="Add TODO" onPress={handleAddTodo} />
+
+          {/* Return to Home */}
+          <Button
+            title="Return to Home"
+            onPress={() => navigation.navigate('Home')}
+          />
+        </>
+      )}
     </View>
   );
 };

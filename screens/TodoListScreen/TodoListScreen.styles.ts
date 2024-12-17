@@ -11,13 +11,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
     padding: 10,
     marginVertical: 10,
-    fontSize: 16,
+    borderColor: '#ccc',
+    borderRadius: 5,
   },
   todoItem: {
     paddingVertical: 8,
@@ -26,11 +36,6 @@ const styles = StyleSheet.create({
   },
   todoText: {
     fontSize: 18,
-  },
-  completedText: {
-    fontSize: 18,
-    textDecorationLine: 'line-through',
-    color: 'gray',
   },
 });
 

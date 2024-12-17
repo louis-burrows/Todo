@@ -1,6 +1,11 @@
 import React from 'react';
 import { AppNavigator } from './navigation/AppNavigator';
+import { TodoProvider } from './context/TodoContext';
 
 export default function App() {
-  return <AppNavigator />;
+  return (
+    <TodoProvider>
+      <AppNavigator />
+    </TodoProvider>
+  );
 }
