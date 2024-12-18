@@ -30,13 +30,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   todoItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderColor: '#ddd',
   },
   todoText: {
     fontSize: 18,
-  },
+  },  
 });
 
 export default styles;

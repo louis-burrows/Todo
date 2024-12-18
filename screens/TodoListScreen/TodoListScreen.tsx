@@ -60,6 +60,19 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     }
   };
 
+  // Function to remove a TODO item
+const handleRemoveTodo = async (todoId: string) => {
+  if (selectedList) {
+    const updatedList = {
+      ...selectedList,
+      items: selectedList.items.filter((item) => item.id !== todoId), // Remove the item
+    };
+
+    setSelectedList(updatedList); // Update local state
+    await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList)); // Update storage
+  }
+};
+
   // Save the list name
   const handleSaveListName = async () => {
     if (selectedList && listName.trim()) {
@@ -119,43 +132,49 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           }}
         />
       )}
+{selectedList && (
+  <>
+    {/* List Name Input */}
+    <TextInput
+      style={styles.input}
+      placeholder="Enter List Name"
+      value={listName}
+      onChangeText={setListName}
+    />
+    <Button title="Save List Name" onPress={handleSaveListName} />
 
-      {selectedList && (
-        <>
-          {/* List Name Input */}
-          <TextInput
-            style={styles.input}
-            placeholder="Enter List Name"
-            value={listName}
-            onChangeText={setListName}
-          />
-          <Button title="Save List Name" onPress={handleSaveListName} />
-
-          {/* TODO List */}
-          <FlatList
-            data={selectedList.items}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.todoItem}>
-                <Text style={styles.todoText}>{item.title}</Text>
-              </View>
-            )}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Add a new TODO"
-            value={newTodo}
-            onChangeText={setNewTodo}
-          />
-          <Button title="Add TODO" onPress={handleAddTodo} />
-
-          {/* Return to Home */}
+    {/* TODO List */}
+    <FlatList
+      data={selectedList.items}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <View style={styles.todoItem}>
+          <Text style={styles.todoText}>{item.title}</Text>
           <Button
-            title="Return to Home"
-            onPress={() => navigation.navigate('Home')}
+            title="Remove"
+            onPress={() => handleRemoveTodo(item.id)}
+            color="red"
           />
-        </>
+        </View>
       )}
+    />
+
+    <TextInput
+      style={styles.input}
+      placeholder="Add a new TODO"
+      value={newTodo}
+      onChangeText={setNewTodo}
+    />
+    <Button title="Add TODO" onPress={handleAddTodo} />
+
+    {/* Return to Home */}
+    <Button
+      title="Return to Home"
+      onPress={() => navigation.navigate('Home')}
+    />
+  </>
+)}
+     
     </View>
   );
 };
