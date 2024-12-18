@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Checkbox } from 'react-native-paper'; // Expo provides this
 import styles from './TodoListScreen.styles';
 
 type Todo = {
@@ -55,32 +63,59 @@ export const TodoListScreen = ({ route, navigation }: any) => {
       };
 
       setSelectedList(updatedList);
-      await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList));
+      await AsyncStorage.setItem(
+        `todoList_${updatedList.id}`,
+        JSON.stringify(updatedList),
+      );
       setNewTodo('');
     }
   };
 
-  // Function to remove a TODO item
-const handleRemoveTodo = async (todoId: string) => {
-  if (selectedList) {
-    const updatedList = {
-      ...selectedList,
-      items: selectedList.items.filter((item) => item.id !== todoId), // Remove the item
-    };
+  // Function to toggle "completed" state of a TODO item
+  const handleToggleCompleted = async (todoId: string) => {
+    if (selectedList) {
+      const updatedList = {
+        ...selectedList,
+        items: selectedList.items.map((item) =>
+          item.id === todoId ? { ...item, completed: !item.completed } : item,
+        ),
+      };
 
-    setSelectedList(updatedList); // Update local state
-    await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList)); // Update storage
-  }
-};
+      setSelectedList(updatedList); // Update local state
+      await AsyncStorage.setItem(
+        `todoList_${updatedList.id}`,
+        JSON.stringify(updatedList),
+      ); // Update storage
+    }
+  };
+
+  // Function to remove a TODO item
+  const handleRemoveTodo = async (todoId: string) => {
+    if (selectedList) {
+      const updatedList = {
+        ...selectedList,
+        items: selectedList.items.filter((item) => item.id !== todoId),
+      };
+
+      setSelectedList(updatedList);
+      await AsyncStorage.setItem(
+        `todoList_${updatedList.id}`,
+        JSON.stringify(updatedList),
+      );
+    }
+  };
 
   // Save the list name
   const handleSaveListName = async () => {
     if (selectedList && listName.trim()) {
       const updatedList = { ...selectedList, name: listName };
-      await AsyncStorage.setItem(`todoList_${updatedList.id}`, JSON.stringify(updatedList));
+      await AsyncStorage.setItem(
+        `todoList_${updatedList.id}`,
+        JSON.stringify(updatedList),
+      );
 
       setAllLists((prev) =>
-        prev.map((list) => (list.id === updatedList.id ? updatedList : list))
+        prev.map((list) => (list.id === updatedList.id ? updatedList : list)),
       );
       setSelectedList(updatedList);
       setListName('');
@@ -108,8 +143,10 @@ const handleRemoveTodo = async (todoId: string) => {
               onPress={() => handleSelectList(item)}
             >
               <Text style={styles.buttonText}>
-                {item.name.length > 20 ? item.name.substring(0, 20) + '...' : item.name} -{' '}
-                {item.createdAt}
+                {item.name.length > 20
+                  ? item.name.substring(0, 20) + '...'
+                  : item.name}{' '}
+                - {item.createdAt}
               </Text>
             </TouchableOpacity>
           )}
@@ -127,54 +164,85 @@ const handleRemoveTodo = async (todoId: string) => {
               createdAt: new Date().toLocaleDateString(),
               items: [],
             };
-            await AsyncStorage.setItem(`todoList_${newList.id}`, JSON.stringify(newList));
+            await AsyncStorage.setItem(
+              `todoList_${newList.id}`,
+              JSON.stringify(newList),
+            );
             setSelectedList(newList);
           }}
         />
       )}
-{selectedList && (
-  <>
-    {/* List Name Input */}
-    <TextInput
-      style={styles.input}
-      placeholder="Enter List Name"
-      value={listName}
-      onChangeText={setListName}
-    />
-    <Button title="Save List Name" onPress={handleSaveListName} />
-
-    {/* TODO List */}
-    <FlatList
-      data={selectedList.items}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <View style={styles.todoItem}>
-          <Text style={styles.todoText}>{item.title}</Text>
-          <Button
-            title="Remove"
-            onPress={() => handleRemoveTodo(item.id)}
-            color="red"
+      {selectedList && (
+        <>
+          {/* List Name Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Enter List Name"
+            value={listName}
+            onChangeText={setListName}
           />
-        </View>
+          <Button title="Save List Name" onPress={handleSaveListName} />
+
+          {/* TODO List */}
+          <FlatList
+            data={selectedList.items}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.todoItem,
+                  item.completed && styles.completedItem, // Green line if completed
+                ]}
+              >
+                <View style={styles.todoContent}>
+                  {/* Checkbox */}
+                  {!isNewList && (
+                    <Checkbox
+                      status={item.completed ? 'checked' : 'unchecked'}
+                      onPress={() => handleToggleCompleted(item.id)}
+                    />
+                  )}
+
+                  {/* TODO Text */}
+                  <Text
+                    style={[
+                      styles.todoText,
+                      item.completed && styles.completedText,
+                    ]}
+                  >
+                    {item.title}
+                  </Text>
+                </View>
+
+                {/* Remove Button */}
+                {item.completed ? (
+                  <Text style={styles.wellDoneText}>Well Done</Text>
+                ) : (
+                  <Button
+                    title="Remove"
+                    onPress={() => handleRemoveTodo(item.id)}
+                    color="red"
+                  />
+                )}
+              </View>
+            )}
+          />
+
+          <TextInput
+            style={styles.input}
+            placeholder="Add a new TODO"
+            value={newTodo}
+            onChangeText={setNewTodo}
+          />
+          <Button title="Add TODO" onPress={handleAddTodo} />
+
+          {/* Return to Home */}
+          <Button
+            title="Return to Home"
+            onPress={() => navigation.navigate('Home')}
+          />
+        </>
       )}
-    />
-
-    <TextInput
-      style={styles.input}
-      placeholder="Add a new TODO"
-      value={newTodo}
-      onChangeText={setNewTodo}
-    />
-    <Button title="Add TODO" onPress={handleAddTodo} />
-
-    {/* Return to Home */}
-    <Button
-      title="Return to Home"
-      onPress={() => navigation.navigate('Home')}
-    />
-  </>
-)}
-     
     </View>
   );
 };

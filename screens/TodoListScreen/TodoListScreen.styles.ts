@@ -37,9 +37,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#ddd',
   },
+  todoContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   todoText: {
     fontSize: 18,
-  },  
+  },
+  completedItem: {
+    backgroundColor: '#d4edda', // Light green background
+  },
+  completedText: {
+    textDecorationLine: 'line-through',
+    color: '#155724', // Dark green text
+  },
+  wellDoneText: {
+    color: 'green',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  
 });
 
 export default styles;
