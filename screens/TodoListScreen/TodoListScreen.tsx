@@ -169,6 +169,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
         <>
           {/* List Name Input */}
           <ListNameInput
+            isNewList={isNewList}
             listName={listName}
             setListName={setListName}
             onSave={handleSaveListName}

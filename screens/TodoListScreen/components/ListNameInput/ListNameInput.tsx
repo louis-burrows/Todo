@@ -6,12 +6,14 @@ type ListNameInputProps = {
   listName: string;
   setListName: (text: string) => void;
   onSave: () => void;
+  isNewList: boolean;
 };
 
 const ListNameInput: React.FC<ListNameInputProps> = ({
   listName,
   setListName,
   onSave,
+  isNewList,
 }) => {
   return (
     <View style={styles.container}>
@@ -22,7 +24,8 @@ const ListNameInput: React.FC<ListNameInputProps> = ({
         onChangeText={setListName}
       />
       <Button
-        title={!listName ? 'Save List Name' : 'Edit List Name'}
+        disabled={!listName.trim()}
+        title={isNewList ? 'Save List Name' : 'Edit List Name'}
         onPress={onSave}
       />
     </View>
