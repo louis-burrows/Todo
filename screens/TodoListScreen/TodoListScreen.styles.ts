@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between', // Ensures spacing with the input always at the bottom
     padding: 20,
     backgroundColor: '#fff',
   },
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#007BFF',
@@ -29,6 +31,9 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
   },
+  todoListContainer: {
+    flex: 1, // Ensures the FlatList always occupies space
+  },
   todoItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -37,26 +42,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#ddd',
   },
-  todoContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   todoText: {
     fontSize: 18,
   },
-  completedItem: {
-    backgroundColor: '#d4edda', // Light green background
-  },
-  completedText: {
-    textDecorationLine: 'line-through',
-    color: '#155724', // Dark green text
-  },
-  wellDoneText: {
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  
 });
 
 export default styles;

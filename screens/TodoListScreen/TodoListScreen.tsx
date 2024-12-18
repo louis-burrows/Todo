@@ -75,7 +75,6 @@ export const TodoListScreen = ({ route, navigation }: any) => {
         prev.map((list) => (list.id === updatedList.id ? updatedList : list)),
       );
       setSelectedList(updatedList);
-      setListName('');
     }
   };
 
@@ -176,11 +175,13 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           />
 
           {/* TODO List */}
-          <TodoList
-            items={selectedList.items}
-            onToggleCompleted={handleToggleCompleted}
-            onRemove={handleRemoveTodo}
-          />
+          <View style={styles.todoListContainer}>
+            <TodoList
+              items={selectedList.items}
+              onToggleCompleted={handleToggleCompleted}
+              onRemove={handleRemoveTodo}
+            />
+          </View>
 
           {/* Add TODO Input */}
           <AddTodoInput
