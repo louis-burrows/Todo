@@ -1,50 +1,33 @@
 import { StyleSheet } from 'react-native';
-import { COLOURS } from '../../constants/colours';
+import { COLORS, SPACING, TYPOGRAPHY } from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between', // Ensures spacing with the input always at the bottom
-    padding: 20,
-    backgroundColor: '#fff',
+    justifyContent: 'space-between',
+    padding: SPACING.md,
+    backgroundColor: COLORS.background,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: TYPOGRAPHY.sizes.xl,
+    fontWeight: TYPOGRAPHY.weights.bold,
+    marginBottom: SPACING.sm,
     textAlign: 'center',
+    color: COLORS.textPrimary,
   },
   button: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
+    backgroundColor: COLORS.primary,
+    padding: SPACING.md,
+    marginVertical: SPACING.xs,
+    borderRadius: SPACING.sm,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: COLORS.textLight,
+    fontSize: TYPOGRAPHY.sizes.md,
     textAlign: 'center',
   },
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
   todoListContainer: {
-    flex: 1, // Ensures the FlatList always occupies space
-  },
-  todoItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-  },
-  todoText: {
-    fontSize: 18,
+    flex: 1,
   },
 });
 

@@ -1,20 +1,21 @@
 import { StyleSheet } from 'react-native';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 const styles = StyleSheet.create({
   button: {
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 5,
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.sm,
+    marginVertical: SPACING.xs,
     alignItems: 'center',
-    backgroundColor: '#007BFF', // Default blue color
+    backgroundColor: COLORS.primary,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: COLORS.textLight,
+    fontSize: TYPOGRAPHY.sizes.md,
+    fontWeight: TYPOGRAPHY.weights.bold,
   },
   disabledButton: {
-    backgroundColor: '#ccc', // Gray color for disabled buttons
+    backgroundColor: COLORS.gray400,
   },
 });
 

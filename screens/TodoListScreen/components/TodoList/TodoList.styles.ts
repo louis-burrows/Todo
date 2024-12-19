@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { COLOURS } from '../../../../constants/colours';
+import { COLORS, SPACING, TYPOGRAPHY } from '../../../../theme';
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingVertical: 10,
+    paddingVertical: SPACING.sm,
   },
   emptyText: {
     textAlign: 'center',
-    fontSize: 16,
-    color: COLOURS.secondary, // Using Deep Indigo
-    marginTop: 20,
+    fontSize: TYPOGRAPHY.sizes.md,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.md,
   },
 });
 

@@ -1,38 +1,41 @@
 import { StyleSheet } from 'react-native';
-import { COLOURS } from '../../../../constants/colours';
+import { COLORS, SPACING, TYPOGRAPHY } from '../../../../theme';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: SPACING.md,
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.gray300,
   },
   completedContainer: {
-    backgroundColor: COLOURS.success, // Lime Green for completed items
+    backgroundColor: COLORS.gray100,
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
-    fontSize: 16,
-    color: COLOURS.text,
-    marginLeft: 10,
+    fontSize: TYPOGRAPHY.sizes.md,
+    color: COLORS.textPrimary,
+    marginLeft: SPACING.sm,
   },
   completedText: {
     textDecorationLine: 'line-through',
-    color: COLOURS.secondary, // Deep Indigo for completed text
+    color: COLORS.textSecondary,
   },
   wellDoneText: {
-    fontSize: 14,
-    color: COLOURS.primary, // Vibrant Orange-Red
-    fontWeight: 'bold',
+    fontSize: TYPOGRAPHY.sizes.sm,
+    color: COLORS.success,
+    fontWeight: TYPOGRAPHY.weights.bold,
   },
   completedCheckbox: {
-    color: COLOURS.success, // Lime Green for completed checkbox
+    color: COLORS.success, // Lime Green for completed checkbox
+  },
+  removeButton: {
+    color: COLORS.danger,
   },
 });
 

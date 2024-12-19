@@ -1,19 +1,19 @@
 import { StyleSheet } from 'react-native';
-import { COLOURS } from '../../../../constants/colours'; 
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../../../theme';
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
-    paddingHorizontal: 10,
+    marginVertical: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
   },
   input: {
     borderWidth: 1,
-    borderColor: COLOURS.secondary, // Using Deep Indigo
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    fontSize: 16,
-    color: COLOURS.text, // Using Text colour
+    borderColor: COLORS.secondary,
+    borderRadius: BORDER_RADIUS.sm,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
+    fontSize: TYPOGRAPHY.sizes.md,
+    color: COLORS.textPrimary,
   },
 });
 

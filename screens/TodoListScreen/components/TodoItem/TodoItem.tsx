@@ -3,6 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import styles from './TodoItem.styles';
 
+
 // Import Types
 import { TodoType } from '../../../../types';
 
@@ -39,7 +40,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
       {item.completed ? (
         <Text style={styles.wellDoneText}>Well Done</Text>
       ) : (
-        <Button title="Remove" onPress={() => onRemove(item.id)} color="red" />
+        <Button title="Remove" onPress={() => onRemove(item.id)} color={styles.removeButton.color} />
       )}
     </View>
   );
