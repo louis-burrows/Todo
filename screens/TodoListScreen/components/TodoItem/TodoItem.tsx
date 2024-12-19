@@ -3,21 +3,24 @@ import { View, Text, Button } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import styles from './TodoItem.styles';
 
-type Todo = {
-  id: string;
-  title: string;
-  completed: boolean;
-};
+// Import Types
+import { TodoType } from '../../../../types';
 
 type TodoItemProps = {
-  item: Todo;
+  item: TodoType;
   onToggleCompleted: (id: string) => void;
   onRemove: (id: string) => void;
 };
 
-const TodoItem: React.FC<TodoItemProps> = ({ item, onToggleCompleted, onRemove }) => {
+const TodoItem: React.FC<TodoItemProps> = ({
+  item,
+  onToggleCompleted,
+  onRemove,
+}) => {
   return (
-    <View style={[styles.container, item.completed && styles.completedContainer]}>
+    <View
+      style={[styles.container, item.completed && styles.completedContainer]}
+    >
       <View style={styles.content}>
         {/* Checkbox */}
         <Checkbox

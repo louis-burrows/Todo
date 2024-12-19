@@ -8,7 +8,11 @@ type AddTodoInputProps = {
   onAdd: () => void;
 };
 
-const AddTodoInput: React.FC<AddTodoInputProps> = ({ newTodo, setNewTodo, onAdd }) => {
+const AddTodoInput: React.FC<AddTodoInputProps> = ({
+  newTodo,
+  setNewTodo,
+  onAdd,
+}) => {
   return (
     <View style={styles.container}>
       <TextInput

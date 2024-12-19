@@ -1,25 +1,31 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import CustomButton from '../../components/CustomButton/CustomButton';
 import styles from './HomeScreen.styles';
 
-export const HomeScreen = ({ navigation }: any) => {
+// Import Types
+import { NavigationProps } from '../../types/Navigation';
+
+export const HomeScreen: React.FC<NavigationProps<'Home'>> = ({
+  navigation,
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>TODO Lists</Text>
 
-      <TouchableOpacity
-        style={styles.button}
+      <CustomButton
+        title="Create a New TODO List"
         onPress={() => navigation.navigate('TodoList', { isNewList: true })}
-      >
-        <Text style={styles.buttonText}>Create a New TODO List</Text>
-      </TouchableOpacity>
+        buttonStyle={styles.button} // Pass the existing button style
+        textStyle={styles.buttonText} // Pass the existing text style
+      />
 
-      <TouchableOpacity
-        style={styles.button}
+      <CustomButton
+        title="See Old TODO Lists"
         onPress={() => navigation.navigate('TodoList', { isNewList: false })}
-      >
-        <Text style={styles.buttonText}>See Old TODO Lists</Text>
-      </TouchableOpacity>
+        buttonStyle={styles.button} // Pass the existing button style
+        textStyle={styles.buttonText} // Pass the existing text style
+      />
     </View>
   );
 };

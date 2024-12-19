@@ -9,18 +9,8 @@ import TodoList from './components/TodoList/TodoList';
 import AddTodoInput from './components/AddTodoInput/AddTodoInput';
 import ReturnToHomeButton from './components/ReturnToHomeButton/ReturnToHomeButton';
 
-type Todo = {
-  id: string;
-  title: string;
-  completed: boolean;
-};
-
-type TodoListType = {
-  id: string;
-  name: string;
-  createdAt: string;
-  items: Todo[];
-};
+// Import Types
+import { TodoListType } from '../../types';
 
 export const TodoListScreen = ({ route, navigation }: any) => {
   const { isNewList } = route.params;
