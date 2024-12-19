@@ -12,6 +12,10 @@ import ReturnToHomeButton from './components/ReturnToHomeButton/ReturnToHomeButt
 // Import Types
 import { TodoListType } from '../../types';
 
+// Import Services
+import { todoStorage } from '../../services/todoStorage';
+
+
 export const TodoListScreen = ({ route, navigation }: any) => {
   const { isNewList } = route.params;
 
@@ -25,16 +29,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
   useEffect(() => {
     const loadLists = async () => {
       try {
-        const keys = await AsyncStorage.getAllKeys();
-        const listKeys = keys.filter((key) => key.startsWith('todoList_'));
-        const storedLists = await AsyncStorage.multiGet(listKeys);
-
-        const parsedLists: TodoListType[] = storedLists
-          .map(([key, value]) => (value ? JSON.parse(value) : null))
-          .filter(Boolean);
-
+        const parsedLists = await todoStorage.getAllLists();
         setAllLists(parsedLists);
-
+  
         // If creating a new list
         if (isNewList && !selectedList) {
           const newList = {
@@ -56,11 +53,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
   const handleSaveListName = async () => {
     if (selectedList && listName.trim()) {
       const updatedList = { ...selectedList, name: listName };
-      await AsyncStorage.setItem(
-        `todoList_${updatedList.id}`,
-        JSON.stringify(updatedList),
-      );
-
+      await todoStorage.saveList(updatedList);
       setAllLists((prev) =>
         prev.map((list) => (list.id === updatedList.id ? updatedList : list)),
       );
@@ -78,12 +71,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           { id: Date.now().toString(), title: newTodo, completed: false },
         ],
       };
-
+  
+      await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
-      await AsyncStorage.setItem(
-        `todoList_${updatedList.id}`,
-        JSON.stringify(updatedList),
-      );
       setNewTodo('');
     }
   };
@@ -97,12 +87,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           item.id === todoId ? { ...item, completed: !item.completed } : item,
         ),
       };
-
+  
+      await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
-      await AsyncStorage.setItem(
-        `todoList_${updatedList.id}`,
-        JSON.stringify(updatedList),
-      );
     }
   };
 
@@ -113,12 +100,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
         ...selectedList,
         items: selectedList.items.filter((item) => item.id !== todoId),
       };
-
+  
+      await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
-      await AsyncStorage.setItem(
-        `todoList_${updatedList.id}`,
-        JSON.stringify(updatedList),
-      );
     }
   };
 
