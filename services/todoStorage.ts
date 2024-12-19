@@ -23,4 +23,12 @@ export const todoStorage = {
       console.error('Failed to save TODO list:', error);
     }
   },
+
+  async deleteList(listId: string): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(`todoList_${listId}`);
+    } catch (error) {
+      console.error('Failed to delete TODO list:', error);
+    }
+  },
 };
