@@ -23,24 +23,27 @@ const TodoItem: React.FC<TodoItemProps> = ({
       style={[styles.container, item.completed && styles.completedContainer]}
     >
       <View style={styles.content}>
-        {/* Checkbox */}
         <Checkbox
           status={item.completed ? 'checked' : 'unchecked'}
           onPress={() => onToggleCompleted(item.id)}
           color={item.completed ? styles.completedCheckbox.color : undefined}
         />
-
-        {/* TODO Text */}
-        <Text style={[styles.text, item.completed && styles.completedText]}>
+        <Text 
+          style={[styles.text, item.completed && styles.completedText]}
+          numberOfLines={3}
+        >
           {item.title}
         </Text>
       </View>
 
-      {/* Remove Button or Well Done */}
       {item.completed ? (
         <Text style={styles.wellDoneText}>Well Done</Text>
       ) : (
-        <Button title="Remove" onPress={() => onRemove(item.id)} color={styles.removeButton.color} />
+        <Button 
+          title="Remove" 
+          onPress={() => onRemove(item.id)} 
+          color={styles.removeButton.color} 
+        />
       )}
     </View>
   );

@@ -15,12 +15,16 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flex: 1,
+    marginRight: SPACING.md,
   },
   text: {
     fontSize: TYPOGRAPHY.sizes.md,
     color: COLORS.textPrimary,
     marginLeft: SPACING.sm,
+    flex: 1,
+    flexWrap: 'wrap',
   },
   completedText: {
     textDecorationLine: 'line-through',
