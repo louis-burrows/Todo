@@ -38,3 +38,7 @@ yarn-error.*
 # other
 .vscode/
 .react/
+
+# IDE specific files
+.idea/
+*.iml
