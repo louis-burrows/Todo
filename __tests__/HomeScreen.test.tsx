@@ -7,9 +7,7 @@ import { RootStackParamList } from '../types/Navigation';
 
 describe('HomeScreen', () => {
   const navigation = createNavigationMock();
-  
-  // Create a mock route object that matches the expected type.
-  // If your `Home` route takes no params, this can be empty.
+
   const route = {
     key: 'Home-key',
     name: 'Home',
@@ -21,7 +19,7 @@ describe('HomeScreen', () => {
 
   it('renders correctly with all elements', () => {
     const { getByText } = render(
-      <HomeScreen navigation={navigation} route={route} />
+      <HomeScreen navigation={navigation} route={route} />,
     );
     expect(getByText('TODO Lists')).toBeTruthy();
     expect(getByText('Create a New TODO List')).toBeTruthy();
@@ -30,19 +28,23 @@ describe('HomeScreen', () => {
 
   it('navigates to TodoList with isNewList=true when Create button is pressed', () => {
     const { getByText } = render(
-      <HomeScreen navigation={navigation} route={route} />
+      <HomeScreen navigation={navigation} route={route} />,
     );
 
     fireEvent.press(getByText('Create a New TODO List'));
-    expect(navigation.navigate).toHaveBeenCalledWith('TodoList', { isNewList: true });
+    expect(navigation.navigate).toHaveBeenCalledWith('TodoList', {
+      isNewList: true,
+    });
   });
 
   it('navigates to TodoList with isNewList=false when See Old Lists button is pressed', () => {
     const { getByText } = render(
-      <HomeScreen navigation={navigation} route={route} />
+      <HomeScreen navigation={navigation} route={route} />,
     );
 
     fireEvent.press(getByText('See Old TODO Lists'));
-    expect(navigation.navigate).toHaveBeenCalledWith('TodoList', { isNewList: false });
+    expect(navigation.navigate).toHaveBeenCalledWith('TodoList', {
+      isNewList: false,
+    });
   });
 });
