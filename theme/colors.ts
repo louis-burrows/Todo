@@ -1,6 +1,6 @@
 export const COLORS = {
   // Primary Colors
-  primary: '#007BFF', // Main brand color (currently used in buttons)
+  primary: '#0459B3', // Main brand color (currently used in buttons)
   secondary: '#2e294e', // Deep Indigo
   accent: '#1b998b', // Teal
 

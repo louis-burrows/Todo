@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TextInput, Button } from 'react-native';
+import { COLORS } from '../../../../theme';
 import styles from './ListNameInput.styles';
 
 type ListNameInputProps = {
@@ -20,6 +21,7 @@ const ListNameInput: React.FC<ListNameInputProps> = ({
       <TextInput
         style={styles.input}
         placeholder="Enter List Name"
+        placeholderTextColor={COLORS.gray500}
         value={listName}
         onChangeText={setListName}
       />

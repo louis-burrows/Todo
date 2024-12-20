@@ -29,14 +29,18 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     const loadLists = async () => {
       try {
         const parsedLists = await todoStorage.getAllLists();
-        setAllLists(parsedLists);
+
+        const sortedListsAlphabetically = parsedLists.sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+        setAllLists(sortedListsAlphabetically);
 
         // If creating a new list
         if (isNewList && !selectedList) {
           const newList = {
             id: Date.now().toString(),
             name: 'Unnamed List',
-            createdAt: new Date().toLocaleDateString(),
+            createdAt: new Date().toLocaleDateString('en-GB'),
             items: [],
           };
           setSelectedList(newList);
@@ -145,7 +149,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
               </Text>
             </TouchableOpacity>
           )}
-          ListEmptyComponent={<Text>No TODO lists found.</Text>}
+          ListEmptyComponent={
+            <Text style={styles.emptyListText}>No TODO lists found.</Text>
+          }
         />
       )}
 

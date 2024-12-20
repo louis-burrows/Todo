@@ -43,6 +43,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.danger + '20',
     color: COLORS.danger,
   },
+  emptyListText: {
+    textAlign: 'center',
+    fontSize: TYPOGRAPHY.sizes.md,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.xl,
+    fontStyle: 'italic',
+  },
 });
 
 export default styles;
