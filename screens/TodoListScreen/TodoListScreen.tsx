@@ -6,6 +6,7 @@ import ListNameInput from './components/ListNameInput/ListNameInput';
 import TodoList from './components/TodoList/TodoList';
 import AddTodoInput from './components/AddTodoInput/AddTodoInput';
 import ReturnToHomeButton from './components/ReturnToHomeButton/ReturnToHomeButton';
+import StartNewListButton from './components/StartNewListButton/StartNewListButton';
 import styles from './TodoListScreen.styles';
 
 // Import Types
@@ -126,6 +127,19 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     setListName(list.name); // Display list name for editing
   };
 
+  const handleStartNewList = () => {
+    const newList = {
+      id: Date.now().toString(),
+      name: 'Unnamed List',
+      createdAt: new Date().toLocaleDateString('en-GB'),
+      items: [],
+    };
+    setSelectedList(newList);
+    setListName('');
+    setNewTodo('');
+    setFeedbackMessage(null);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -191,7 +205,10 @@ export const TodoListScreen = ({ route, navigation }: any) => {
             onAdd={handleAddTodo}
           />
 
-          <ReturnToHomeButton onPress={() => navigation.navigate('Home')} />
+          <View style={styles.buttonContainer}>
+            <ReturnToHomeButton onPress={() => navigation.navigate('Home')} />
+            <StartNewListButton onPress={handleStartNewList} />
+          </View>
         </>
       )}
     </View>

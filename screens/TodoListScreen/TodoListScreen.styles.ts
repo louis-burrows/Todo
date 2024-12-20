@@ -50,6 +50,14 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xl,
     fontStyle: 'italic',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: SPACING.xl,
+    marginBottom: SPACING.md,
+    gap: SPACING.md,
+  },
 });
 
 export default styles;

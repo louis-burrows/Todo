@@ -1,17 +1,13 @@
 import React from 'react';
-import { View, Button } from 'react-native';
-import styles from './ReturnToHomeButton.styles';
+import { Button } from 'react-native';
+import { COLORS } from '../../../../theme';
 
 type ReturnToHomeButtonProps = {
   onPress: () => void;
 };
 
 const ReturnToHomeButton: React.FC<ReturnToHomeButtonProps> = ({ onPress }) => {
-  return (
-    <View style={styles.container}>
-      <Button title="Return to Home" onPress={onPress} />
-    </View>
-  );
+  return <Button title="Return to Home" onPress={onPress} color={COLORS.primary} />;
 };
 
 export default ReturnToHomeButton;
