@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS, SPACING, TYPOGRAPHY } from '../../theme';
+import { BORDER_RADIUS, COLORS, SPACING, TYPOGRAPHY } from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,6 +28,20 @@ const styles = StyleSheet.create({
   },
   todoListContainer: {
     flex: 1,
+  },
+  feedbackMessage: {
+    textAlign: 'center',
+    padding: SPACING.sm,
+    marginTop: SPACING.xs,
+    borderRadius: BORDER_RADIUS.sm,
+  },
+  successMessage: {
+    backgroundColor: COLORS.success + '20', // 20 is for opacity
+    color: COLORS.success,
+  },
+  errorMessage: {
+    backgroundColor: COLORS.danger + '20',
+    color: COLORS.danger,
   },
 });
 

@@ -15,7 +15,6 @@ import { TodoListType } from '../../types';
 // Import Services
 import { todoStorage } from '../../services/todoStorage';
 
-
 export const TodoListScreen = ({ route, navigation }: any) => {
   const { isNewList } = route.params;
 
@@ -24,6 +23,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
   const [selectedList, setSelectedList] = useState<TodoListType | null>(null);
   const [newTodo, setNewTodo] = useState('');
   const [listName, setListName] = useState('');
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   // Load all saved TODO lists
   useEffect(() => {
@@ -31,7 +31,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
       try {
         const parsedLists = await todoStorage.getAllLists();
         setAllLists(parsedLists);
-  
+
         // If creating a new list
         if (isNewList && !selectedList) {
           const newList = {
@@ -52,12 +52,28 @@ export const TodoListScreen = ({ route, navigation }: any) => {
   // Save the list name
   const handleSaveListName = async () => {
     if (selectedList && listName.trim()) {
-      const updatedList = { ...selectedList, name: listName };
-      await todoStorage.saveList(updatedList);
-      setAllLists((prev) =>
-        prev.map((list) => (list.id === updatedList.id ? updatedList : list)),
-      );
-      setSelectedList(updatedList);
+      try {
+        const updatedList = { ...selectedList, name: listName };
+        await todoStorage.saveList(updatedList);
+        setAllLists((prev) =>
+          prev.map((list) => (list.id === updatedList.id ? updatedList : list)),
+        );
+        setSelectedList(updatedList);
+
+        // Show success feedback
+        setFeedbackMessage('List name saved successfully!');
+
+        // Clear feedback after 2 seconds
+        setTimeout(() => {
+          setFeedbackMessage(null);
+        }, 2000);
+      } catch (error) {
+        // Show error feedback
+        setFeedbackMessage('Failed to save list name. Please try again.');
+        setTimeout(() => {
+          setFeedbackMessage(null);
+        }, 2000);
+      }
     }
   };
 
@@ -71,7 +87,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           { id: Date.now().toString(), title: newTodo, completed: false },
         ],
       };
-  
+
       await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
       setNewTodo('');
@@ -87,7 +103,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           item.id === todoId ? { ...item, completed: !item.completed } : item,
         ),
       };
-  
+
       await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
     }
@@ -100,7 +116,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
         ...selectedList,
         items: selectedList.items.filter((item) => item.id !== todoId),
       };
-  
+
       await todoStorage.saveList(updatedList);
       setSelectedList(updatedList);
     }
@@ -148,6 +164,19 @@ export const TodoListScreen = ({ route, navigation }: any) => {
             setListName={setListName}
             onSave={handleSaveListName}
           />
+
+          {feedbackMessage && (
+            <Text
+              style={[
+                styles.feedbackMessage,
+                feedbackMessage.includes('Failed')
+                  ? styles.errorMessage
+                  : styles.successMessage,
+              ]}
+            >
+              {feedbackMessage}
+            </Text>
+          )}
 
           {/* TODO List */}
           <View style={styles.todoListContainer}>
