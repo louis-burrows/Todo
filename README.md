@@ -45,6 +45,7 @@ A React Native mobile application for creating and managing TODO lists. Built wi
 - [ ] Add proper error boundaries and error handling
 - [ ] Implement proper loading states for async operations
 - [ ] Add proper form validation
+- [ ] Partition out code which would be more practical as reusable components
 - [ ] Implement proper state management (Redux/Context API)
 - [ ] Implement proper CI/CD pipeline
 
