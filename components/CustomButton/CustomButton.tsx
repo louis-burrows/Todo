@@ -6,8 +6,9 @@ type CustomButtonProps = {
   title: string;
   onPress: () => void;
   disabled?: boolean;
-  buttonStyle?: ViewStyle; // Additional styles for the button
-  textStyle?: TextStyle; // Additional styles for the text
+  buttonStyle?: ViewStyle;
+  textStyle?: TextStyle;
+  testID?: string;
 };
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -16,13 +17,15 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   disabled = false,
   buttonStyle,
   textStyle,
+  testID,
 }) => {
   return (
     <TouchableOpacity
+      testID={testID}
       style={[
         styles.button,
-        disabled && styles.disabledButton, // Disabled button styling
-        buttonStyle, // Custom styles
+        disabled && styles.disabledButton,
+        buttonStyle,
       ]}
       onPress={onPress}
       disabled={disabled}
