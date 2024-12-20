@@ -46,7 +46,6 @@ A React Native mobile application for creating and managing TODO lists. Built wi
 - [ ] Implement proper loading states for async operations
 - [ ] Add proper form validation
 - [ ] Implement proper state management (Redux/Context API)
-- [ ] Add proper logging system
 - [ ] Implement proper CI/CD pipeline
 
 ### Features
@@ -67,14 +66,11 @@ A React Native mobile application for creating and managing TODO lists. Built wi
 - [ ] Add proper empty states
 - [ ] Implement dark mode support
 - [ ] Add accessibility features
-- [ ] Add proper keyboard handling
-- [ ] Add gesture support
 - [ ] Implement proper responsive design
 
 ### Performance
 
-- [ ] Implement proper list virtualization
-- [ ] Add proper caching mechanisms
+- [ ] Implement proper list virtualization and limiting
 - [ ] Optimize re-renders using React.memo and useMemo
 - [ ] Implement proper code splitting
 
