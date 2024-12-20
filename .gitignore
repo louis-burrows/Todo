@@ -40,5 +40,5 @@ yarn-error.*
 .react/
 
 # IDE specific files
-.idea/
+
 *.iml
