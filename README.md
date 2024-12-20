@@ -12,8 +12,12 @@ A React Native mobile application for creating and managing TODO lists. Built wi
 
 ## Getting Started
 
-npm install
-npm expo start --web
+`npm install`
+`npm expo start --web`
+
+## Testing
+
+`npm test`
 
 ### Prerequisites
 
