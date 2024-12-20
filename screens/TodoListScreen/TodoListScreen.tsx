@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import styles from './TodoListScreen.styles';
 
 // Import Components
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import ListNameInput from './components/ListNameInput/ListNameInput';
 import TodoList from './components/TodoList/TodoList';
 import AddTodoInput from './components/AddTodoInput/AddTodoInput';
 import ReturnToHomeButton from './components/ReturnToHomeButton/ReturnToHomeButton';
+import styles from './TodoListScreen.styles';
 
 // Import Types
 import { TodoListType } from '../../types';
@@ -49,7 +48,6 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     loadLists();
   }, [isNewList]);
 
-  // Save the list name
   const handleSaveListName = async () => {
     if (selectedList && listName.trim()) {
       try {
@@ -77,7 +75,6 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     }
   };
 
-  // Add a new TODO to the selected list
   const handleAddTodo = async () => {
     if (newTodo.trim() && selectedList) {
       const updatedList = {
@@ -94,8 +91,7 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     }
   };
 
-  // Toggle completion of a TODO item
-  const handleToggleCompleted = async (todoId: string) => {
+  const handleToggleCompletionOfTodo = async (todoId: string) => {
     if (selectedList) {
       const updatedList = {
         ...selectedList,
@@ -109,7 +105,6 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     }
   };
 
-  // Remove a TODO item
   const handleRemoveTodo = async (todoId: string) => {
     if (selectedList) {
       const updatedList = {
@@ -122,10 +117,9 @@ export const TodoListScreen = ({ route, navigation }: any) => {
     }
   };
 
-  // Handle selecting an old list
-  const handleSelectList = (list: TodoListType) => {
+  const handleSelectListOfTodos = (list: TodoListType) => {
     setSelectedList(list);
-    setListName(list.name); // Set the name for editing
+    setListName(list.name); // Display list name for editing
   };
 
   return (
@@ -141,11 +135,11 @@ export const TodoListScreen = ({ route, navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.button}
-              onPress={() => handleSelectList(item)}
+              onPress={() => handleSelectListOfTodos(item)}
             >
               <Text style={styles.buttonText}>
-                {item.name.length > 20
-                  ? item.name.substring(0, 20) + '...'
+                {item.name.length > 30
+                  ? item.name.substring(0, 30) + '...'
                   : item.name}{' '}
                 - {item.createdAt}
               </Text>
@@ -157,7 +151,6 @@ export const TodoListScreen = ({ route, navigation }: any) => {
 
       {selectedList && (
         <>
-          {/* List Name Input */}
           <ListNameInput
             isNewList={isNewList}
             listName={listName}
@@ -178,23 +171,20 @@ export const TodoListScreen = ({ route, navigation }: any) => {
             </Text>
           )}
 
-          {/* TODO List */}
           <View style={styles.todoListContainer}>
             <TodoList
               items={selectedList.items}
-              onToggleCompleted={handleToggleCompleted}
+              onToggleCompleted={handleToggleCompletionOfTodo}
               onRemove={handleRemoveTodo}
             />
           </View>
 
-          {/* Add TODO Input */}
           <AddTodoInput
             newTodo={newTodo}
             setNewTodo={setNewTodo}
             onAdd={handleAddTodo}
           />
 
-          {/* Return to Home */}
           <ReturnToHomeButton onPress={() => navigation.navigate('Home')} />
         </>
       )}

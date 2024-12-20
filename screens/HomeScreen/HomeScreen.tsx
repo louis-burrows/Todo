@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import styles from './HomeScreen.styles';
 
@@ -16,15 +16,15 @@ export const HomeScreen: React.FC<NavigationProps<'Home'>> = ({
       <CustomButton
         title="Create a New TODO List"
         onPress={() => navigation.navigate('TodoList', { isNewList: true })}
-        buttonStyle={styles.button} // Pass the existing button style
-        textStyle={styles.buttonText} // Pass the existing text style
+        buttonStyle={styles.button}
+        textStyle={styles.buttonText}
       />
 
       <CustomButton
-        title="See Old TODO Lists"
+        title="Check Old TODO Lists"
         onPress={() => navigation.navigate('TodoList', { isNewList: false })}
-        buttonStyle={styles.button} // Pass the existing button style
-        textStyle={styles.buttonText} // Pass the existing text style
+        buttonStyle={styles.button}
+        textStyle={styles.buttonText}
       />
     </View>
   );

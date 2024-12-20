@@ -1,4 +1,4 @@
-import { TodoType } from "./Todo";
+import { TodoType } from './Todo';
 
 export type TodoListType = {
   id: string;

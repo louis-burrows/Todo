@@ -1,4 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Import Types
 import { TodoListType } from '../types';
 
 export const todoStorage = {

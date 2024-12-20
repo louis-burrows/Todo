@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontWeight: TYPOGRAPHY.weights.bold,
   },
   completedCheckbox: {
-    color: COLORS.success, // Lime Green for completed checkbox
+    color: COLORS.success,
   },
   removeButton: {
     color: COLORS.danger,
