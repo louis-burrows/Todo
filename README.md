@@ -51,6 +51,7 @@ A React Native mobile application for creating and managing TODO lists. Built wi
 
 ### Features
 
+- [ ] Add list management - delete finished todo lists etc
 - [ ] Add categories/tags for TODO lists
 - [ ] Add due dates for tasks
 - [ ] Add priority levels for tasks
