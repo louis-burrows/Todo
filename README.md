@@ -30,7 +30,7 @@ npm expo start --web
 3. Enter a list name and save it
 4. Add tasks to your list
 5. Mark tasks as complete or remove them as needed
-6. Use "Start New List" to create another list or "Return to Home" to go back
+6. Use "Start Again" to create another list or "Return to Home" to go back
 
 ## Future Improvements
 
